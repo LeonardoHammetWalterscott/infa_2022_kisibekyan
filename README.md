@@ -1,1 +1,2 @@
-# infa_2022_kisibekyan
+it's test project
+
