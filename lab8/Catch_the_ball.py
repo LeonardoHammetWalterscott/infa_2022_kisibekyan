@@ -12,7 +12,7 @@ from random import randint
 # Инициализация и первичная настройка pygame.
 pygame.init()
 
-FPS = 120
+FPS = 90
 screen_w = 1600
 screen_h = 900
 screen = pygame.display.set_mode((screen_w, screen_h))
@@ -58,16 +58,16 @@ def new_ball(balls):
                 intersection = True
     color = COLORS[randint(0, 5)]
 
-    speed_x, speed_y = random_speed()           # Скорости по осям x и y.
-    is_clicked = False                          # Кликнули ли на шарик.
-    is_strange = randint(0, randint(0, 1))      # Задает новый тип поведения, если 1.
+    speed_x, speed_y = random_speed()                   # Скорости по осям x и y.
+    is_clicked = False                                  # Кликнули ли на шарик.
+    is_strange = randint(0, randint(0, 1))              # Задает новый тип поведения, если 1.
     return [x, y, r, color, speed_x, speed_y, is_clicked, is_strange]
 
 
 def show_moves(index, balls):
     """
     Реализует движение шаров. Если шар кликнут, создает новый.
-    :index: Индекс изменившегося шара.
+    :param index: Индекс изменившегося шара.
     :param balls: Список шаров.
     """
     ball = balls[index]
@@ -135,14 +135,14 @@ def score_counter(click_event, balls, score):
     for ball in balls:
         if click(click_event, ball):
             ball[6] = True
-            score += 2*ball[7] + 1              # Добавляет очки в зависимости от типа шара.
+            score += 2*ball[7] + 1                      # Добавляет очки в зависимости от типа шара.
             break
     return score
 
 
 # Оснвные переменные.
-ball_number = 15                                # Количество шаров (НЕ БОЛЬШЕ 15).
-score_int = 0                                   # Очки.
+ball_number = 10                                        # Количество шаров (НЕ БОЛЬШЕ 15).
+score_int = 0                                           # Очки.
 
 # Список шаров и его изначальное пополнение.
 list_of_balls = []
@@ -155,8 +155,9 @@ clock = pygame.time.Clock()
 finished = False
 
 while not finished:
+
     clock.tick(FPS)
-    clock.tick(FPS)
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             finished = True
@@ -165,9 +166,9 @@ while not finished:
 
     for i in range(len(list_of_balls)):
         ball = list_of_balls[i]
-        check_collisions_with_balls(i, list_of_balls)
-        check_collisions_with_walls(ball)
-        show_moves(i, list_of_balls)
+        check_collisions_with_balls(i, list_of_balls)   # Проверка коллизии с другими шарами
+        check_collisions_with_walls(ball)               # Проверка коллизии со стенами
+        show_moves(i, list_of_balls)                    # Реализация движения всех шаров
 
     pygame.display.update()
     screen.fill(BLACK)
