@@ -4,18 +4,12 @@
 Наслаждайтесь!
 """
 
-# Импортирование библиотек
+# Импортирование библиотек.
 import pygame
 from pygame.draw import *
 from random import randint
-# import numpy as np
-# import pandas as pd
 
-# Запрос имени
-print("Добро пожаловать в нашу замечательную игру!\nВведите ваше имя: ")
-# nickname = input()
-
-# Инициализация и первичная настройка pygame
+# Инициализация и первичная настройка pygame.
 pygame.init()
 
 FPS = 120
@@ -37,9 +31,9 @@ COLORS = [RED, BLUE, YELLOW, GREEN, MAGENTA, CYAN]
 def random_speed(min_speed=2, max_speed=12):
     """
     Задает случайные скорости.
-    :param min_speed: Минимальная скорость
-    :param max_speed: Максимальная скорость
-    :return: speed_x, speed_y
+    :param min_speed: Минимальная скорость.
+    :param max_speed: Максимальная скорость.
+    :return: speed_x, speed_y.
     """
     return randint(min_speed, max_speed) * (randint(0, 1) * 2 - 1), \
         randint(min_speed, max_speed) * (randint(0, 1) * 2 - 1)
@@ -48,9 +42,9 @@ def random_speed(min_speed=2, max_speed=12):
 def new_ball(balls):
     """
     Создает новый шар, не пересекающий старые.
-    :param balls: Список шаров
+    :param balls: Список шаров.
     :return: Список следующих параметров шара:
-    [0] = x, [1] = y, [2] = r, [3] = color, [4] = speed_x, [5] = speed_y, [6] - is_clicked, [7] - is_strange
+    [0] = x, [1] = y, [2] = r, [3] = color, [4] = speed_x, [5] = speed_y, [6] - is_clicked, [7] - is_strange.
     """
     intersection = True
     x, y, r = 0, 0, 0
@@ -64,16 +58,17 @@ def new_ball(balls):
                 intersection = True
     color = COLORS[randint(0, 5)]
 
-    speed_x, speed_y = random_speed()           # Скорости по осям x и y
-    is_clicked = False                          # Кликнули ли на шарик
-    is_strange = randint(0, randint(0, 1))      # Задает новый тип поведения, если 1
+    speed_x, speed_y = random_speed()           # Скорости по осям x и y.
+    is_clicked = False                          # Кликнули ли на шарик.
+    is_strange = randint(0, randint(0, 1))      # Задает новый тип поведения, если 1.
     return [x, y, r, color, speed_x, speed_y, is_clicked, is_strange]
 
 
 def show_moves(index, balls):
     """
     Реализует движение шаров. Если шар кликнут, создает новый.
-    :param balls: Список шаров
+    :index: Индекс изменившегося шара.
+    :param balls: Список шаров.
     """
     ball = balls[index]
     if not ball[6]:
@@ -91,7 +86,7 @@ def show_moves(index, balls):
 def check_collisions_with_walls(ball):
     """
     Проверяет столкновения с границами экрана.
-    :param ball: Шар
+    :param ball: Шар, который проверяется.
     """
     while ball[0] + ball[4] - screen_w > -ball[2] or ball[0] + ball[4] < ball[2] or \
             ball[1] + ball[5] - screen_h > -ball[2] or ball[1] + ball[5] < ball[2]:
@@ -100,10 +95,9 @@ def check_collisions_with_walls(ball):
 
 def check_collisions_with_balls(index, balls):
     """
-
-    :param index:
-    :param balls:
-    :return:
+    Проверяет столкновения с другими шариками.
+    :param index: Индекс шарика, у с которым проверяется.
+    :param balls: Массив шаров.
     """
     ball1 = balls[index]
     for j in range(len(balls)):
@@ -121,9 +115,9 @@ def check_collisions_with_balls(index, balls):
 def click(click_event, ball):
     """
     Проверяет, попал ли клик мышки в мишень.
-    :param click_event: Событие клика
-    :param ball: Объект, на котором проверяется клик
-    :return: True или False
+    :param click_event: Событие клика.
+    :param ball: Объект, на котором проверяется клик.
+    :return: True или False.
     """
     mouse_x = click_event.pos[0]
     mouse_y = click_event.pos[1]
@@ -132,30 +126,30 @@ def click(click_event, ball):
 
 def score_counter(click_event, balls, score):
     """
-
-    :param click_event:
-    :param balls:
-    :param score:
-    :return:
+    Считает очки.
+    :param click_event: Событие клика.
+    :param balls: Список шаров.
+    :param score: Очки.
+    :return: Очки.
     """
     for ball in balls:
         if click(click_event, ball):
             ball[6] = True
-            score += 2*ball[7] + 1              # Добавляет очки в зависимости от типа шара
+            score += 2*ball[7] + 1              # Добавляет очки в зависимости от типа шара.
             break
     return score
 
 
-# Оснвные переменные
-ball_number = 15                                # Количество шаров (НЕ БОЛЬШЕ 15)
-score_int = 0                                   # Очки
+# Оснвные переменные.
+ball_number = 15                                # Количество шаров (НЕ БОЛЬШЕ 15).
+score_int = 0                                   # Очки.
 
-# Список шаров и его изначальное пополнение
+# Список шаров и его изначальное пополнение.
 list_of_balls = []
 for i in range(ball_number):
     list_of_balls.append(new_ball(list_of_balls))
 
-# Основная исполняющая часть
+# Основная исполняющая часть.
 pygame.display.update()
 clock = pygame.time.Clock()
 finished = False
